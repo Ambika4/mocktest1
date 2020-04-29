@@ -1,4 +1,5 @@
 const express = require('express');
+const db=require('./config/mongoose');
 const port=8000;/** On port 80 all website hosts */
 /*app listen to the port*/
 
