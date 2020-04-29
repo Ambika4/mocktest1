@@ -7,9 +7,11 @@ const port=8000;/** On port 80 all website hosts */
 
 const app = express();
 app.use(bodyParser.json());
+
 app.use(express.urlencoded());
 
-app.get('/', (req, res) => res.send('Hello World!'));
+//routes
+app.use('/',require('./routes'));
 
 
 app.listen(port,function(err){
@@ -18,3 +20,4 @@ app.listen(port,function(err){
     }
     console.log(`server is running on port${port}`);
 });
+module.exports = app;
