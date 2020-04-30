@@ -1,3 +1,4 @@
+const queryParser = require('express-query-parser')
 const express = require('express');
 const db=require('./config/mongoose');
 const bodyParser = require('body-parser')
@@ -6,6 +7,12 @@ const port=8000;/** On port 80 all website hosts */
 
 
 const app = express();
+app.use(
+    queryParser({
+      parseNull: true,
+      parseBoolean: true
+    })
+  )
 app.use(bodyParser.json());
 
 app.use(express.urlencoded());

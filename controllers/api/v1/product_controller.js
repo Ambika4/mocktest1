@@ -70,5 +70,30 @@ module.exports.delete=function(req,res){
 
 }
 
+module.exports.update=function(req,res){
+  console.log(req.params.id);
+  try{
+    Product.findById(req.params.id,function(err,product){
+        if(err)
+        {
+          res.status(500).json({message:"Unable to find the product"});
+        }
+        if(product)
+        {
+          console.log(req.query);
+          product.quantity=product.quantity+parseInt(req.query.number);
+          product.save();
+          res.status(200).json({
+            product:product,
+            message:"Product quantity updated successfully"
+          })
+        }
+      })
+
+  }catch(err){
+    res.status(500).json({message:"Unable to search in db"});
+  }
+}
+
 
 
