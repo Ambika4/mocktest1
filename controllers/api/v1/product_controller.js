@@ -1,60 +1,67 @@
 const Product=require('../../../models/product');
 
-module.exports.create=   function(req,res){
-  Product.findOne({name:req.body.name},function(err,product){
-    if(err)
-    {
-        console.log('error in finding product in Product collection');
-        return;
-    }
-    if(!product){
-        Product.create(req.body,function(err,product){
-          if(err)
-          {
-              console.log('error in adding product ');
-              return ;
-          }
-          
-          return res.status(500).json(
-            {
-              data:{
-                name:req.body.name,
-                quantity:req.body.quantity
+//create the product
+module.exports.create=function(req,res){
+  try{
+      //checking if product already exist
+      Product.findOne({name:req.body.name},function(err,product){
+        if(err)
+        {
+          res.status(500).json({err,message:"error in finding product"})
+        }//if product is not added then add
+        if(!product){
+            Product.create(req.body,function(err,product){
+              if(err)
+              {
+                  res.status(500).json({err,message:"error in adding product"})
               }
-            }
-          );
-        })
-    }else{
-        return res.status(400).json({message:"product already created"});
-    }
-});
-     
+              
+              return res.status(500).json(
+                {
+                  data:{
+                    name:req.body.name,
+                    quantity:req.body.quantity
+                  }
+                }
+              );
+            })
+        }else{
+            return res.status(400).json({err,message:"product already created"});
+        }
+      });
+  }
+  catch(err){
+    res.status(500).json({message:err});
+  }    
 }
 
-module.exports.allProducts=function(req,res){
-  
+//for getting list of all products
+module.exports.allProducts=function(req,res){ 
   try{
-  
+    //find all product with any condition
      Product.find({},function(err,product){
-       return res.status(200).json(
-         {
-           data:product
-         }
-       )
-     });
-  }
+       return res.status(200).
+       json(
+          {
+            data:{product
+            }
+          }
+        )
+      });
+    }
   catch(err)
   {
-    return res.status(400).json({message:"Error in finding product"});
+    return res.status(400).json({err,message:"Error in finding product"});
   }
 }
 
 module.exports.delete=function(req,res){
   try{
+    //find the product with the help of req.params.id
       Product.findById(req.params.id,function(err,product){
   
         if(err){
-            res.status(500).json({message:"Product with given id doesn't exist"});
+            res.status(500).json({err});
             }
         if(product)
         {
@@ -62,31 +69,39 @@ module.exports.delete=function(req,res){
           product.remove();
           res.status(200).json({message:"Product deleted successfully"});
         }
+        if(!product)
+        {
+          res.status(400).json({err,message:"Product with given id doesn't exist or already deleted"});
+        }
       })
   }
   catch(err){
-    res.status(500).json({message:"Unable to find in db"});
+    res.status(500).json({err,message:"Unable to find in db"});
   }
 
 }
 
+//function for updating the quantity
 module.exports.update=function(req,res){
-  console.log(req.params.id);
   try{
+    //find the product with the help of req.params.id
     Product.findById(req.params.id,function(err,product){
         if(err)
         {
-          res.status(500).json({message:"Unable to find the product"});
+          res.status(500).json({err});
         }
         if(product)
         {
-          console.log(req.query);
+          //changing req.query.number from string to integer with help of parseInt
           product.quantity=product.quantity+parseInt(req.query.number);
           product.save();
           res.status(200).json({
             product:product,
             message:"Product quantity updated successfully"
           })
+        }
+        if(!product){
+          res.status(500).json({err,message:"Unable to find the product"});
         }
       })
 

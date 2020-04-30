@@ -7,14 +7,19 @@ const port=8000;/** On port 80 all website hosts */
 
 
 const app = express();
+
+//for pasrsing query params
 app.use(
     queryParser({
       parseNull: true,
       parseBoolean: true
     })
-  )
+)
+
+//for parsing body
 app.use(bodyParser.json());
 
+//if there is  form data
 app.use(express.urlencoded());
 
 //routes
