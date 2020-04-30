@@ -31,5 +31,44 @@ module.exports.create=   function(req,res){
      
 }
 
+module.exports.allProducts=function(req,res){
+  
+  try{
+  
+     Product.find({},function(err,product){
+       return res.status(200).json(
+         {
+           data:product
+         }
+       )
+     });
+  }
+  catch(err)
+  {
+    return res.status(400).json({message:"Error in finding product"});
+  }
+}
+
+module.exports.delete=function(req,res){
+  try{
+      Product.findById(req.params.id,function(err,product){
+  
+        if(err){
+            res.status(500).json({message:"Product with given id doesn't exist"});
+            }
+        if(product)
+        {
+          
+          product.remove();
+          res.status(200).json({message:"Product deleted successfully"});
+        }
+      })
+  }
+  catch(err){
+    res.status(500).json({message:"Unable to find in db"});
+  }
+
+}
+
 
 

@@ -1,11 +1,13 @@
 //require the libray
 const mongoose= require('mongoose');
+const autoIncrement = require('mongodb-autoincrement');
 
 //connect to the database
 mongoose.connect('mongodb://localhost/ecommmerce_db');
 
 //acquire the connection(to check if it is successful)
 const db=mongoose.connection;
+
 
 //error
 db.on('error',console.error.bind(console,'error connecting to db'));
