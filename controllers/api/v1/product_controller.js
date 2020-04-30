@@ -19,8 +19,10 @@ module.exports.create=function(req,res){
               return res.status(500).json(
                 {
                   data:{
-                    name:req.body.name,
-                    quantity:req.body.quantity
+                    "product":{
+                      name:req.body.name,
+                      quantity:req.body.quantity
+                    }
                   }
                 }
               );
