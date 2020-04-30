@@ -42,14 +42,13 @@ Respomse:
                 "name": "Fssdde",
                 "quantity": 2,
                 "__v": 0
-            }
-           
-        ]
-    }
-}
+            }    
+        ]    
+    }    
+}   
 
-3.Api to delete product by using params 
-route:/api/v1/products/ :id 
+3.Api to delete product by using params   
+route:/api/v1/products/ :id   
 Method:Delete  
 req:pass id in URl   
 res:{  
@@ -57,10 +56,10 @@ res:{
 }
 
 
-4.Update quantity of product 
-route:products/8/update_quantity/?number=10  
-Method:Post  
-req:pass id of product and number by which increase or decrease in query param   
+4.Update quantity of product    
+route:products/:id/update_quantity/?number=10     
+Method:Post    
+req:pass id of product and number by which increase or decrease in query param     
 res:{
     "product": {  
         "_id": 10,  
